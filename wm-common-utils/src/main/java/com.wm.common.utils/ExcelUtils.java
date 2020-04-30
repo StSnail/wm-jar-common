@@ -3,10 +3,7 @@ package com.wm.common.utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,6 +43,9 @@ public class ExcelUtils {
                 if (row == null) {
                     continue;
                 }
+                if (isRowEmpty(row)) {
+                    continue;
+                }
 
                 JSONObject jsonObject = new JSONObject();
                 for (int j = 0; j < columnNames.size() && j <= row.getLastCellNum(); j++) {
@@ -59,6 +59,22 @@ public class ExcelUtils {
             logger.error("toExcel error: filename={}", filename, e);
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * 判断当前行是否为空
+     *
+     * @param row
+     * @return
+     */
+    public static boolean isRowEmpty(Row row) {
+        for (int i = row.getFirstCellNum(); i < row.getLastCellNum(); i++) {
+            Cell cell = row.getCell(i);
+            if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
