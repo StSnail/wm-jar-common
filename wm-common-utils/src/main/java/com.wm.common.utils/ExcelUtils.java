@@ -19,6 +19,16 @@ public class ExcelUtils {
     private static final DataFormatter formatter = new DataFormatter();
     private static final Gson gson = new Gson();
 
+    /**
+     * 读文件并转成List对象
+     *
+     * @param filename
+     * @param stream
+     * @param clazz
+     * @param columnNames
+     * @param <T>
+     * @return
+     */
     public static <T> List<T> toExcel(String filename, InputStream stream, Class<T> clazz, List<String> columnNames) {
 
         try {
